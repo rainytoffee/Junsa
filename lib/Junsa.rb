@@ -35,8 +35,8 @@ class Junsa < SlackRubyBot::Bot
        desc 'アルベド語を日本語に変換します。<ンゴ用>'
      end
 
-     command 'next_holiday' do
-       desc "内閣府CSVの息吹"
+     command 'next_holiday <整数>' do
+       desc "内閣府CSVの息吹\n 与えた引数分の祝日を辿ります。与えなければ直近のみ。range(1..30)"
      end
 
      command '来なさい||来るんだ' do
@@ -163,8 +163,8 @@ class Junsa < SlackRubyBot::Bot
     client.say(channel: data.channel, text: pull_dog)
   end
 
-  match /next_holiday/ do |client, data, match|
-    client.say(channel: data.channel, text: holiday )
+  match /next_holiday *(.+)*/ do |client, data, match|
+    client.say(channel: data.channel, text: holiday(match[1]) )
   end
 
 
