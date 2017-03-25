@@ -21,7 +21,7 @@ def lee(args)
     end
   end
 
-res = Faraday.get "https://bridgehead.co/api/similar?api_key=03dc9838-e732-4104-9857-ce20b6b50fda&positive=#{positives.join(",")}&negative=#{negatives.join(",")}"
+res = Faraday.get "https://bridgehead.co/api/similar?api_key=#{ENV["SIMILAR_API_KEY"]}&positive=#{positives.join(",")}&negative=#{negatives.join(",")}"
 
 body = JSON.parse(res.body)
 
