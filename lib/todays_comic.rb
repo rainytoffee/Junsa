@@ -23,7 +23,7 @@ class ComicManage
     #trまでxpath指定しないと配列にならないよ！
     #tbodyまでしか指定しなかったのでひとまとまりでobjが生成されて、eachかけても1line扱いでハマったから注意
   end
-  attr_accessor :n_obj_begin, :n_obj_mid, :n_obj_late, :o_obj_begin, :o_obj_mid, :o_obj_late
+  attr_reader :n_obj_begin, :n_obj_mid, :n_obj_late, :o_obj_begin, :o_obj_mid, :o_obj_late
 
   def search_today
     say = String.new
@@ -72,13 +72,8 @@ class ComicManage
   end
 end
 
+##############################################################
   def out_today
-    manager = ComicManage.new
-    manager.search_today
+    cmanager = ComicManage.new
+    cmanager.search_today
   end
-=begin
-  def out_title
-    manager = ComicManage.new
-    manager.
-  end
-=end

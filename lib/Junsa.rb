@@ -3,6 +3,7 @@ require 'slack-ruby-client'
 require 'dbi'
 require './similar'
 require './todays_comic'
+require './order_comics'
 
 
 #TOKEN読み込み
@@ -19,6 +20,7 @@ points = DBI.connect( 'DBI:SQLite3:junsa_points.db' )
 #すでにテーブルがあれば削除
 points.do("drop table if exists points_table")
 #新しくpointsテーブルを作るのですね
+################################!!!!↓ここ[table （]スペース入れないとエラる
 points.do("create table points_table (
   name      varchar     not null,
   point     int         not null,
@@ -37,15 +39,27 @@ client.on :message do |data|
 
   case data['text']
 
+###########################################################
+  when /^register (.*)/ #タイトル付で初期化
+    client.message channel: data['channel'], text: register(you,$1)
+  when /^add_comic (.*)/ #発言ユーザIdにタイトル追加
+    client.message channel: data['channel'], text: add(you,$1)
+  when /^remove_mylist$/ #テーブル全消し
+    client.message channel: data['channel'], text: remove_mylist(you)
+  when /^show_table$/
+    client.message channel: data['channel'], text: show_table(you)
   when /^out_today$/
     client.message channel: data['channel'], text: out_today
 
+###########################################################
   when /^hi$/
     client.message channel: data['channel'], text:'connect!'
 
+############################################################
   when /similar (.*)/
     client.message channel: data['channel'], text: lee($1)
 
+############################################################
   when /おはようポイントおねがいします/
     points.do("insert into points_table values (
     \'#{you}\',
@@ -53,7 +67,6 @@ client.on :message do |data|
     'BUSTED'
     );")
     client.message channel: data['channel'], text: "おはようカウントはじめます！#{you}！"
-
   when /巡査ちゃん、おはようございます/
     points.do("update points_table set point=point+1 where name=\'#{you}\';")
     client.message channel: data['channel'], text:"おはようございます、#{you}"
