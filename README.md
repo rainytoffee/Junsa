@@ -1,2 +1,2 @@
 # Junsa
-priority is high.
+Earlybird sing alone on the twig.
