@@ -46,6 +46,8 @@ client.on :message do |data|
     client.message channel: data['channel'], text: add(you,$1)
   when /^remove_mylist$/ #テーブル全消し
     client.message channel: data['channel'], text: remove_mylist(you)
+  when /^remove_title (.*)$/ #タイトル消し
+    client.message channel: data['channel'], text: remove_title(you,$1)
   when /^show_table$/
     client.message channel: data['channel'], text: show_table(you)
   when /^out_today$/

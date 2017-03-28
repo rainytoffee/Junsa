@@ -14,25 +14,37 @@ require './todays_comic'
     def register(user,baggage)
       comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
       comics.do("insert into reg_c_table values (
-        \'#{user}\',
-        \'#{baggage}\'
+        '#{user}',
+        '#{baggage}'
         );")
     end
 
     def add(user,new_title)
       comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      comics.do("update reg_c_table set titles=titles||\'#{new_title}\' where user=\'#{user}\';")
+      comics.do("update reg_c_table set titles=titles||',#{new_title}' where user='#{user}';")
     end
 
     def remove_mylist(user)
       comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      comics.do ( "drop table if exists reg_c_table" )
+      comics.do ( "delete from reg_c_table where user = '#{user}';" )
     end
+
+    def remove_title(user,title)
+      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
+      exe = comics.execute ( "select * from reg_c_table where user='#{user}';" )
+      exe.each do |row|
+        user = row["user"]
+        titles = row["titles"].gsub("#{title}","").gsub(/^,/,"").gsub(/,$/,"").gsub(/,,/,",")
+
+        return titles
+      end
+    end
+
 
     def show_table(user)
       comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      exe = comics.execute ( "select * from reg_c_table where user=\'#{user}\';" )
-  
+      exe = comics.execute ( "select * from reg_c_table where user='#{user}';" )
+
       exe.each do |row|
         user = row["user"]
         titles = row["titles"]
