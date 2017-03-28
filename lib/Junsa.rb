@@ -5,7 +5,6 @@ require './similar'
 require './todays_comic'
 require './order_comics'
 
-
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]
 Slack.configure do |conf|
@@ -40,16 +39,16 @@ client.on :message do |data|
   case data['text']
 
 ###########################################################
-  when /^register (.*)/ #タイトル付で初期化
-    client.message channel: data['channel'], text: register(you,$1)
-  when /^add_comic (.*)/ #発言ユーザIdにタイトル追加
-    client.message channel: data['channel'], text: add(you,$1)
-  when /^remove_mylist$/ #テーブル全消し
-    client.message channel: data['channel'], text: remove_mylist(you)
-  when /^remove_title (.*)$/ #タイトル消し
-    client.message channel: data['channel'], text: remove_title(you,$1)
-  when /^show_table$/
-    client.message channel: data['channel'], text: show_table(you)
+  when /^cinit (.*)/ #タイトル付で初期化
+    client.message channel: data['channel'], text: COrder::register(you,$1)
+  when /^cadd (.*)/ #発言者Idにタイトル追加
+    client.message channel: data['channel'], text: COrder::add(you,$1)
+  when /^cremove all$/ #発言者idのタイトルリスト全消し
+    client.message channel: data['channel'], text: COrder::remove_all_title(you)
+  when /^cremove (.*)$/ #発言者idの指定タイトル消し
+    client.message channel: data['channel'], text: COrder::remove_title(you,$1)
+  when /^cshow$/
+    client.message channel: data['channel'], text: COrder::show_table(you)
   when /^out_today$/
     client.message channel: data['channel'], text: out_today
 

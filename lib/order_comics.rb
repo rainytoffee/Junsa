@@ -3,52 +3,55 @@ require 'open-uri'
 require 'date'
 require './todays_comic'
 
+
+class COrder
+    class << self
     #漫画発売日用DBがなければつくる、すでにあれば開く
-    comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
+    @@comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
     #テーブルもつくる、if not exists付      ########↓スペース必須#######
-    comics.do("create table if not exists reg_c_table (
+    @@comics.do("create table if not exists reg_c_table (
         user    varchar  not null,
         titles  varchar  not null
         );")
 
     def register(user,baggage)
-      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      comics.do("insert into reg_c_table values (
+      @@comics.do("insert into reg_c_table values (
         '#{user}',
         '#{baggage}'
         );")
     end
 
     def add(user,new_title)
-      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      comics.do("update reg_c_table set titles=titles||',#{new_title}' where user='#{user}';")
+      @@comics.do("update reg_c_table set titles=titles||',#{new_title}' where user='#{user}';")
+      "追加: #{new_title}"
     end
 
-    def remove_mylist(user)
-      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      comics.do ( "delete from reg_c_table where user = '#{user}';" )
+    def remove_all_title(user)
+      @@comics.do ( "delete from reg_c_table where user = '#{user}';" )
+      "全タイトル削除しました"
     end
 
     def remove_title(user,title)
-      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      exe = comics.execute ( "select * from reg_c_table where user='#{user}';" )
+      exe = @@comics.execute ( "select * from reg_c_table where user='#{user}';" )
       exe.each do |row|
         user = row["user"]
-        titles = row["titles"].gsub("#{title}","").gsub(/^,/,"").gsub(/,$/,"").gsub(/,,/,",")
+        updated_titles = row["titles"].gsub("#{title}","").gsub(/^,/,"").gsub(/,$/,"").gsub(/,,/,",")
 
-        return titles
+        @@comics.do("update reg_c_table set titles='#{updated_titles}' where user='#{user}';")
       end
+      "削除: #{title}"
     end
 
 
     def show_table(user)
-      comics = DBI.connect( 'DBI:SQLite3:reg_comics.db' )
-      exe = comics.execute ( "select * from reg_c_table where user='#{user}';" )
-
+      exe = @@comics.execute ( "select * from reg_c_table where user='#{user}';" )
       exe.each do |row|
         user = row["user"]
         titles = row["titles"]
+        return "You need register [cinit TITLE] command) before use cshow command." if user == ""
+        return "You have no titles.Use [cadd TITLE] command for tip tip la la." if titles == ""
         return "#{user}->#{titles}"
       end
-
     end
+  end
+end
