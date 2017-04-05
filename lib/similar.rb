@@ -25,8 +25,13 @@ res = Faraday.get "https://bridgehead.co/api/similar?api_key=#{ENV["SIMILAR_API_
 
 body = JSON.parse(res.body)
 
+begin
 body["similarity"].each do |line|
 say << "#{line.to_s.gsub(","," -> ").gsub("\"","")}\n"
+end
+
+rescue => e
+return "#{args.to_s.gsub("+","").gsub("-","")}に無効なクエリが含まれています\n#{e.class}\n#{e.message}"
 end
 
 say

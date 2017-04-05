@@ -5,21 +5,19 @@ require './similar'
 require './todays_comic'
 require './order_comics'
 
+
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]
 Slack.configure do |conf|
   conf.token = TOKEN
 end
 
-# RTM Clientのインスタンス生成
 client = Slack::RealTime::Client.new
 
 # おはようポイントDBをつくる、すでにあれば開く、points変数に代入
 points = DBI.connect( 'DBI:SQLite3:junsa_points.db' )
-#すでにテーブルがあれば削除
 points.do("drop table if exists points_table")
-#新しくpointsテーブルを作るのですね
-################################!!!!↓ここ[table （]スペース入れないとエラる
+
 points.do("create table points_table (
   name      varchar     not null,
   point     int         not null,
@@ -29,18 +27,22 @@ points.do("create table points_table (
 
 # slackに接続できたときの処理
 client.on :hello do
-  puts 'connected!'
+  puts 'CCC------CCCCC----------CCCCCCCCCC-----'
 end
 
 # message eventを受け取った時の処理
 client.on :message do |data|
-    you = data['user']
+    you = "<@#{data['user']}>"
+
+
+cmanager = ComicManage.new
+begin
 
   case data['text']
 
 ###########################################################
-  when /^cinit (.*)/ #タイトル付で初期化
-    client.message channel: data['channel'], text: COrder::register(you,$1)
+  when /^cinit$/ #タイトル付で初期化
+    client.message channel: data['channel'], text: COrder::cinit(you)
   when /^cadd (.*)/ #発言者Idにタイトル追加
     client.message channel: data['channel'], text: COrder::add(you,$1)
   when /^cremove all$/ #発言者idのタイトルリスト全消し
@@ -50,15 +52,21 @@ client.on :message do |data|
   when /^cshow$/
     client.message channel: data['channel'], text: COrder::show_table(you)
   when /^out_today$/
-    client.message channel: data['channel'], text: out_today
+    client.message channel: data['channel'], text: "本日 #{Date.today.month}月#{Date.today.day}日 発売の漫画はこちら\n""\n#{cmanager.search_today}"
+  when /^titles$/
+    client.message channel: data['channel'], text: COrder::title_matcher(you)
 
 ###########################################################
   when /^hi$/
-    client.message channel: data['channel'], text:'connect!'
+    client.message channel: data['channel'], text: "#{you}が麹町に住んでいることを知っているぞ"
 
 ############################################################
   when /similar (.*)/
     client.message channel: data['channel'], text: lee($1)
+  when /^ないよ$/
+    client.message channel: data['channel'], text: "あるよ！"
+  when /^あるよ$/
+    client.message channel: data['channel'], text: "ないよ！"
 
 ############################################################
   when /おはようポイントおねがいします/
@@ -91,7 +99,11 @@ client.on :message do |data|
       end
       end
   end
+rescue UncaughtThrowError => e
+   client.message channel: data['channel'], text:"#{e}\n君のリストが空か、ID登録されてない。cinitした？"
+rescue SQLite3::ConstraintException => e
+   client.message channel: data['channel'], text:"#{e}\n君のIDもうあるよ。caddで追加、cshowで確認ね"
 end
-
+end
 
 client.start!
