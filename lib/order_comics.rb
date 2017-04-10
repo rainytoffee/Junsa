@@ -63,9 +63,8 @@ class COrder
     def which_do_you_like(user)
       exe = @@comics.execute ( "select * from reg_c_table where user='#{user}';" )
       exe.each do |row|
-        user = row["user"]
-        point_forefinger = row["titles"]
-        return point_forefinger
+        #user = row["user"]
+        return row["titles"]
       end
     end
 

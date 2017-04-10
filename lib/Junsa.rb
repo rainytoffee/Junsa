@@ -4,6 +4,7 @@ require 'dbi'
 require './similar'
 require './todays_comic'
 require './order_comics'
+require './antidote'
 
 
 #TOKEN読み込み
@@ -68,6 +69,9 @@ begin
   when /^あるよ$/
     client.message channel: data['channel'], text: "ないよ！"
 
+############################################################
+when /^summary (.*)$/
+  client.message channel: data['channel'], text: summary($1)
 ############################################################
   when /おはようポイントおねがいします/
     points.do("insert into points_table values (
