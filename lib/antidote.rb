@@ -1,42 +1,72 @@
 require 'nokogiri'
 require 'open-uri'
 
-def get_glance(difficulty)
 
-eventdoc = Nokogiri::HTML(open('http://altema.jp/ffrk/eventdugeon')) #イベント一覧
-glance = eventdoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr[3]/td/ul/li")
+def get_glance(beatit)
 
-bosses = Array.new
-links = Array.new
+#現行通常イベント一覧
+eventdoc = Nokogiri::HTML(open('http://altema.jp/ffrk/eventdugeon'))
+e_glance = eventdoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr[3]/td/ul/li")
 
-glance.each do |line|
-  if line.text.match(/#{difficulty}/)
-    bosses << line
+#ナイトメア一覧
+nightmaredoc = Nokogiri::HTML(open('http://altema.jp/ffrk/nightmaredungeon-34400'))
+n_glance = nightmaredoc.xpath("//*[@id='main-contents']/div[1]/div/div/table/tbody/tr/td[@style='text-align: center;']/a")
+
+e_bosses = Array.new#イベントボス配列
+n_bosses = Array.new#ナイトメアボス配列
+links = Array.new #クエリにマッチしたボスの攻略URLが入るのですね
+
+
+#ナイトメアボス照会
+n_glance.each do |line|
+  if line.text.match(/#{beatit}/)
+    n_bosses << line
+  #  puts "n_glanceのマッチ済みlineを表示しています => #{line} <=ここまで"
   end
 end
 
-bosses.each do |bosslinks|
-  bosslinks.css('a').each do |link|
-  links << link[:href]
+#マッチしたnokogiriobjのhrefだけほじってlinks(array)へ流す(なぜ配列index1にURLが入ってくるのかわからん。0は"href"が入ってた)
+n_bosses.each do |boss|
+  boss.each do |link|
+    links << link[1]
   end
 end
-return links
+
+
+#イベントボス照会
+e_glance.each do |line|
+  if line.text.match(/#{beatit}/)
+    e_bosses << line
+  #  puts "e_glanceのマッチ済みlineを表示しています => #{line} <=ここまで"
+  end
+end
+#こちらもhrefだけほじってlinksへ流す
+e_bosses.each do |bosslinks|
+  bosslinks.css('a').each do |bosslink|
+  links << bosslink[:href]
+  end
+end
+      return links
 end
 
 
-def summary(difficulty)
+def summary(beatit)
   result = String.new
 
-  links = get_glance(difficulty)
+  links = get_glance(beatit)
   links.each do |link|
     summary = Nokogiri::HTML(open("#{link}"))
     specialscore = summary.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr")
     weakness = summary.xpath("//*[@id='main-contents']/div[1]/div/div/table[2]/tbody/tr")
-    result << specialscore.inner_text.gsub("\n\n","\n").gsub("水"," *水* ").gsub("雷"," *雷* ").gsub("氷"," *氷* ").gsub("炎"," *炎* ").gsub("聖"," *聖* ").gsub("風"," *風* ").gsub("地"," *地* ").gsub("闇"," *闇* ").gsub("毒"," *毒* ")
-    result << weakness.inner_text.gsub("\n\n","\n").gsub("水"," *水* ").gsub("雷"," *雷* ").gsub("氷"," *氷* ").gsub("炎"," *炎* ").gsub("聖"," *聖* ").gsub("風"," *風* ").gsub("地"," *地* ").gsub("闇"," *闇* ").gsub("毒"," *毒* ")
-    result << "----------------------------------------------\n"
-end
+    result << ":tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou:\n"
+    result << specialscore.inner_text.gsub("\n\n","\n").gsub("スペスコ",":su::pe::su::ko:").gsub("水",":mizu:").gsub("雷",":kaminari:").gsub("氷",":koori:").gsub("炎",":honoo:").gsub("聖",":sei:").gsub("風",":kaze:").gsub("地",":chi:").gsub("闇",":yami:").gsub("毒",":doku:")
+    result << weakness.inner_text.gsub("\n\n","\n").gsub("ボス名",":bo::su:").gsub("弱点属性",":jaku::ten::zoku::sei2:").gsub("属性耐性",":zoku::sei2::tai::sei2:").gsub("有効な状態異常",":yuu::kou::na::jou::tai::i2::jou2:").gsub("ブレイク耐性",":bu::re::i::ku::tai::sei2:").gsub("水",":mizu:").gsub("雷",":kaminari:").gsub("氷",":koori:").gsub("炎",":honoo:").gsub("聖",":sei:").gsub("風",":kaze:").gsub("地",":chi:").gsub("闇",":yami:").gsub("毒",":doku:")
+    result << ":tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi:\n"
+  end
+
+  return "NO INFORMATION. (JIDAI OKURE)" if result.empty?
   return result
 end
 
-#summary("滅")
+#get_glance("めがみ")
+#summary("ヒドゥン")

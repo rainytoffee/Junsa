@@ -59,7 +59,7 @@ begin
 
 ###########################################################
   when /^hi$/
-    client.message channel: data['channel'], text: "#{you}が麹町に住んでいることを知っているぞ"
+    client.message channel: data['channel'], text: ":jun3::sa3::kiku:"
 
 ############################################################
   when /similar (.*)/
@@ -106,7 +106,10 @@ when /^summary (.*)$/
 rescue UncaughtThrowError => e
    client.message channel: data['channel'], text:"#{e}\n君のリストが空か、ID登録されてない。cinitした？"
 rescue SQLite3::ConstraintException => e
-   client.message channel: data['channel'], text:"#{e}\n君のIDもうあるよ。caddで追加、cshowで確認ね"
+   client.message channel: data['channel'], text:"#{e}\n君のIDもうあるよ。caddで追加、cshowで確認"
+rescue => e
+    client.message channel: data['channel'], text:"#{e}\n情報元が死んでるか、たぶんまだ更新されてない。ぷろばぶりー"
+
 end
 end
 
