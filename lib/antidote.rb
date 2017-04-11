@@ -58,10 +58,9 @@ def summary(beatit)
     summary = Nokogiri::HTML(open("#{link}"))
     specialscore = summary.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr")
     weakness = summary.xpath("//*[@id='main-contents']/div[1]/div/div/table[2]/tbody/tr")
-    result << ":tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou::tsuyosou:\n"
     result << specialscore.inner_text.gsub("\n\n","\n").gsub("スペスコ",":su::pe::su::ko:").gsub("水",":mizu:").gsub("雷",":kaminari:").gsub("氷",":koori:").gsub("炎",":honoo:").gsub("聖",":sei:").gsub("風",":kaze:").gsub("地",":chi:").gsub("闇",":yami:").gsub("毒",":doku:")
     result << weakness.inner_text.gsub("\n\n","\n").gsub("ボス名",":bo::su:").gsub("弱点属性",":jaku::ten::zoku::sei2:").gsub("属性耐性",":zoku::sei2::tai::sei2:").gsub("有効な状態異常",":yuu::kou::na::jou::tai2::i2::jou2:").gsub("ブレイク耐性",":bu::re::i::ku::tai::sei2:").gsub("水",":mizu:").gsub("雷",":kaminari:").gsub("氷",":koori:").gsub("炎",":honoo:").gsub("聖",":sei:").gsub("風",":kaze:").gsub("地",":chi:").gsub("闇",":yami:").gsub("毒",":doku:")
-    result << ":tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi:\n"
+  #  result << ":tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi::tsuyoi:\n"
   end
 
   return "NO INFORMATION. (JIDAI OKURE)" if result.empty?
