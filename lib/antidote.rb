@@ -12,8 +12,14 @@ e_glance = eventdoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbod
 nightmaredoc = Nokogiri::HTML(open('http://altema.jp/ffrk/nightmaredungeon-34400'))
 n_glance = nightmaredoc.xpath("//*[@id='main-contents']/div[1]/div/div/table/tbody/tr/td[@style='text-align: center;']/a")
 
+multidoc = Nokogiri::HTML(open('http://altema.jp/ffrk/multistage-35714'))
+m_glance = multidoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr/td/a")
+
+
 e_bosses = Array.new#イベントボス配列
 n_bosses = Array.new#ナイトメアボス配列
+m_bosses = Array.new#マルチボス配列
+
 links = Array.new #クエリにマッチしたボスの攻略URLが入るのですね
 
 
@@ -24,7 +30,6 @@ n_glance.each do |line|
   #  puts "n_glanceのマッチ済みlineを表示しています => #{line} <=ここまで"
   end
 end
-
 #マッチしたnokogiriobjのhrefだけほじってlinks(array)へ流す(なぜ配列index1にURLが入ってくるのかわからん。0は"href"が入ってた)
 n_bosses.each do |boss|
   boss.each do |link|
@@ -46,6 +51,20 @@ e_bosses.each do |bosslinks|
   links << bosslink[:href]
   end
 end
+
+#multiboss inquiry
+m_glance.each do |line|
+  if line.text.match(/#{beatit}/)
+    m_bosses << line
+    #puts "m_glanceのマッチ済みlineを表示しています => #{line} <=ここまで"
+  end
+end
+m_bosses.each do |boss|
+  boss.each do |link|
+    links << link[1]
+  end
+end
+      #p "links => #{links}"
       return links
 end
 
@@ -68,4 +87,4 @@ def summary(beatit)
 end
 
 #get_glance("めがみ")
-#summary("ヒドゥン")
+#summary("めがみ")
