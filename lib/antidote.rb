@@ -10,7 +10,7 @@ e_glance = eventdoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbod
 
 #ナイトメア一覧
 nightmaredoc = Nokogiri::HTML(open('http://altema.jp/ffrk/nightmaredungeon-34400'))
-n_glance = nightmaredoc.xpath("//*[@id='main-contents']/div[1]/div/div/table/tbody/tr/td[@style='text-align: center;']/a")
+n_glance = nightmaredoc.xpath("//*[@id='main-contents']/div[1]/div/div/table/tbody/tr/td[@style='text-align: center;']")
 
 multidoc = Nokogiri::HTML(open('http://altema.jp/ffrk/multistage-35714'))
 m_glance = multidoc.xpath("//*[@id='main-contents']/div[1]/div/div/table[1]/tbody/tr/td/a")
@@ -31,12 +31,13 @@ n_glance.each do |line|
   end
 end
 #マッチしたnokogiriobjのhrefだけほじってlinks(array)へ流す(なぜ配列index1にURLが入ってくるのかわからん。0は"href"が入ってた)
-n_bosses.each do |boss|
-  boss.each do |link|
-    links << link[1]
+n_bosses.each do |bosslinks|
+  bosslinks.css('a').each do |bosslink|
+
+    links << bosslink[:href]
+    #puts "#{links}37行目"
   end
 end
-
 
 #イベントボス照会
 e_glance.each do |line|
@@ -51,6 +52,7 @@ e_bosses.each do |bosslinks|
   links << bosslink[:href]
   end
 end
+
 
 #multiboss inquiry
 m_glance.each do |line|
@@ -87,4 +89,4 @@ def summary(beatit)
 end
 
 #get_glance("めがみ")
-#summary("めがみ")
+#summary("ヒドゥン")
