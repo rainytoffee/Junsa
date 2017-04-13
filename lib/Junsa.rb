@@ -7,6 +7,9 @@ require './order_comics'
 require './antidote'
 require './weapons.rb'
 
+help=
+"/hi/ - Hi!
+//"
 
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]
@@ -31,7 +34,7 @@ begin
   case data['text']
 ###########################################################
   when /^help$/
-    client.message channel: data['channel'], text: ""
+    client.message channel: data['channel'], text: help
 ###########################################################
 
 ###########################################################

@@ -80,6 +80,7 @@ return result.join.gsub(" | 公式【FFRK】FINAL FANTASY Record Keeper最速攻
 .gsub(/魔力(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
 .gsub(/防御力(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
 .gsub(/魔防(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
+.gsub(/精神(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
 .gsub(/回避\n\w{1,3}\n\w{1,3}\n\w{1,3}\n/,"")
 .gsub(/\n(.{1,15})必殺技変更[\n]*/){|match| match.gsub("#{match}","必殺技変更(#{$1}):")}
 .gsub(/初期値\n/,"    初期|")
