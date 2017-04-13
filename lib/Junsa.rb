@@ -9,7 +9,21 @@ require './weapons.rb'
 
 help=
 "/hi/ - Hi!
-//"
+
+/similar <(+ or -)query>/  -<query>の類語を表示します 語頭に+||-が必要です
+
+/out_today/           -きょうでる漫画
+/cinit/               -あなたのIDでDBを新規作成
+/cadd <title>/     -あなたのDBに<title>を追加
+/cremove <title>/  -あなたのDBから<title>を削除（完全一致）
+/cremove all/         -あなたのDBをきれいに削除
+/cshow/               -DBの中身を表示します
+/titles/              -DBの中にきょうでるのがあれば叫びます（とりつくろい機能）
+
+/summary (boss)/    -<boss>の情報を表示(部分一致OK、イベント、ナイトメア、マルチに対応)
+/eqp ff<number> <equipment>/   -FF<number>の<eqpuipment>の情報を表示します。
+                               （equipment部分は一致OK。照会対象は★5,6のみ。）"
+
 
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]
