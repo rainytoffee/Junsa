@@ -65,7 +65,7 @@ begin
 ############################################################
   when /^summary (.*)$/
     client.message channel: data['channel'], text: summary($1)
-  when /^equipment (.*) (.*)$/
+  when /^eqp (.*) (.*)$/
     client.message channel: data['channel'], text: hojikuri_weapon($1,$2)
 ############################################################
   end
