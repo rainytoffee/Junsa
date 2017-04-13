@@ -71,7 +71,7 @@ def hojikuri_weapon(series,name)
 
 result =["---------",title,img,status,effect,finisher_title,finisher_info]
 
-return result.join.gsub(" | 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0","---------")
+return result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0\n/,"---------").gsub(/\n \n/,"\n")
 .gsub("ステータス","").gsub("効果","")
 .gsub(/\n\n命中\n\w{2,3}\n\w{2,3}\n\w{2,3}\n\n\n\n\n/,"")
 .gsub(/[\n]{2,}/,"\n")
@@ -91,4 +91,4 @@ return result.join.gsub(" | 公式【FFRK】FINAL FANTASY Record Keeper最速攻
 #.gsub(/回避(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
   end
 end
-#hojikuri_weapon("ff14","サークレット")
+#hojikuri_weapon("ff12","ナガサ")
