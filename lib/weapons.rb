@@ -69,22 +69,24 @@ def hojikuri_weapon(series,name)
   finisher_title = Nokogiri::HTML(open(link)).xpath("//*[@id='content_block_18-body']/a[1]").text
   finisher_info = Nokogiri::HTML(open(link)).xpath("//*[@id='content_block_20']/tr[1]").text
 
-result =[title,img,status,effect,finisher_title,finisher_info]
+result =["-----------",title,img,status,effect,finisher_title,finisher_info]
 
-return result.join.gsub(" | 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0","")
+return result.join.gsub(" | 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0","-----------")
 .gsub("ステータス","").gsub("効果","")
 .gsub(/\n\n命中\n\w{2,3}\n\w{2,3}\n\w{2,3}\n\n\n\n\n/,"")
 .gsub(/[\n]{2,}/,"\n")
 .gsub("特殊","")
 .gsub(/攻撃力(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
+.gsub(/魔力(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
 .gsub(/防御力(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
 .gsub(/魔防(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
-.gsub(/回避(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
-.gsub(/\n(.{1,15})必殺技変更/){|match| match.gsub("#{match}","必殺技変更(#{$1}):")}
+.gsub(/回避\n\w{1,3}\n\w{1,3}\n\w{1,3}\n/,"")
+.gsub(/\n(.{1,15})必殺技変更[\n]*/){|match| match.gsub("#{match}","必殺技変更(#{$1}):")}
 .gsub(/初期値\n/,"    初期|")
-.gsub(/最大値\(進化後\)\n/,"進化|")
-.gsub(/最大値\(超進化後\)/,"超進化")
+.gsub(/最大値\(進化後\)\n/,":tsuyosou:|")
+.gsub(/最大値\(超進化後\)/,":tsuyoi:")
 .gsub(/\(：(.)\)/){"(#{$1})"}
+#.gsub(/回避(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
   end
 end
-#hojikuri_weapon("ff5","道着")
+#hojikuri_weapon("ff5","ビュート")
