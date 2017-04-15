@@ -23,13 +23,18 @@ def generate_docs(series,name)
   end
 end
 ##########################################################################
-
+def sugiuchi?(eqp_num)
+  if eqp_num > 20
+    return "結果多杉内 欲張杉内"
+  end
+end
 ##########################################################################
 def hitting(series,name)
 
   #completion = "https://ffrk攻略.gamematome.jp/"
   completion = "https://xn--ffrk-8i9hs14f.gamematome.jp"
-  hitting_eqp = String.new
+  hitting_eqp = String.new #返り値
+  eqp_num = 0 #多杉内？
 
   case series
   when "acc","accy"
@@ -37,12 +42,21 @@ def hitting(series,name)
 
   docacc.each do |acc|
   #puts "#{weapon}LINE!!!"
-   if acc.text.match(/#{name}/)
-   hitting_eqp << "-------------#{acc.text}\n".gsub(/\n\d\n\n/,"\n")
+    if acc.text.match(/#{name}/)
+       hitting_eqp << "-------------#{acc.text}\n".gsub(/\n\d\n\n/,"\n")
+                                                  .gsub(/なし/,"軽減/耐性なし")
+                                                  .gsub(/【大】/,":lv-dai:")
+                                                  .gsub(/【中】/,":lv-chuu:")
+                                                  .gsub(/【小】/,":lv-shou:")
+          eqp_num += 1
+          if sugiuchi?(eqp_num)
+            hitting_eqp = sugiuchi?(eqp_num)
+            break
+          end
+        end
     end
-  end
 
-else
+  else
   doc5, doc6 = generate_docs(series,name)
 
   doc5.each do |weapon|
@@ -78,11 +92,12 @@ def hojikuri_weapon(series,name)
   case series
   when "acc","accy"
     hitting_eqp = hitting(series,name)
+  #  p hitting_eqp
     return hitting_eqp ##############アクセサリの時はここでreturn！！############
 
     ##################以下はeqp ff○ eqpnameの場合##############
   else
-    series.upcase!
+    series.upcase!#代入先URLが大文字のため
   end
 
   hitting_eqp = hitting(series,name)
@@ -145,4 +160,4 @@ result << a_result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最
 return result
 #  end
 end
-#hojikuri_weapon("acc","地属性")
+#hojikuri_weapon("acc","VI")
