@@ -38,7 +38,7 @@ def hitting(series,name)
   docacc.each do |acc|
   #puts "#{weapon}LINE!!!"
    if acc.text.match(/#{name}/)
-     hitting_eqp << "-------------#{acc.text}\n\n".gsub(/\d/,"")
+  return hitting_eqp << "-------------#{acc.text}\n".gsub(/\n\d\n\n/,"\n")
     end
   end
 
@@ -145,4 +145,4 @@ result << a_result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最
 return result
 #  end
 end
-hojikuri_weapon("acc","地属性")
+#hojikuri_weapon("acc","地属性")
