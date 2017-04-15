@@ -66,7 +66,7 @@ begin
   when /^cshow$/
     client.message channel: data['channel'], text: COrder::show_table(you)
   when /^out_today$/
-    client.message channel: data['channel'], text: "本日 #{Date.today.month}月#{Date.today.day}日 発売の漫画はこちら\n""\n#{cmanager.search_today}"
+    client.message channel: data['channel'], text: cmanager.search_today
   when /^titles$/
     client.message channel: data['channel'], text: COrder::title_matcher(you)
 

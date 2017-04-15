@@ -5,7 +5,7 @@ class ComicManage
 
       MONTH = Date.today.month
       DAY   = Date.today.day
-      TODAY = "#{MONTH}月#{DAY+1}日"
+      TODAY = "#{MONTH}月#{DAY}日"
 
       NEW_DOC = Nokogiri::HTML(open('https://honto.jp/netstore/calender.html'))#来月
       OLD_DOC = Nokogiri::HTML(open('https://honto.jp/netstore/calender/old.html'))#今月
@@ -67,8 +67,8 @@ class ComicManage
           titles << "#{line.xpath("./td[3]").text.gsub("　"," ")}\n"
         end
         end
-        #
-    return titles
+      return "今日はなんにも出ませんから、もう寝なさい" if titles.empty?
+      return "本日 #{Date.today.month}月#{Date.today.day}日 発売の漫画はこちら\n#{titles}" #本日発売タイトルarray"
   end
 ##############################################################
 def search_today_titles
@@ -106,6 +106,6 @@ def search_today_titles
         titles << line.xpath("./td[2]").text.gsub("　"," ")
       end
       end
-  return titles #本日発売タイトルarray
+        return  titles
 end
 end
