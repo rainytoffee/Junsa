@@ -20,10 +20,12 @@ help=
 /cshow/               -DBの中身を表示します
 /titles/              -DBの中にきょうでるのがあれば叫びます（とりつくろい機能）
 
-/summary (boss)/    -<boss>の情報を表示(部分一致OK、イベント、ナイトメア、マルチに対応)
-/eqp ff<number> <equipment>/   -FF<number>の<eqpuipment>の情報を表示します。
-                               （equipment部分は一致OK。照会対象は★5,6のみ。）"
-
+/summary <boss>/    -<boss>の情報を表示(部分一致OK、イベント、ナイトメア、マルチに対応。ダンジョン名でもいけそう)
+/eqp ff<number> <equipment>/   -FF<number>の装備一覧を対象に、<eqpuipment>の情報を表示します。
+                               （equipment部分は一致OK。照会対象は★5,6のみ。）
+/eqp acc(或はaccy) <equipment(名前、或は軽減属性、状態異常等)>/  -<equipment>にマッチしたアクセサリを表示。
+                                部分一致OK。複数クエリ不可。レアリティは全アクセサリを照会。
+"
 
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]

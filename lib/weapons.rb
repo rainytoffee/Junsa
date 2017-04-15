@@ -78,11 +78,13 @@ def hojikuri_weapon(series,name)
   case series
   when "acc","accy"
     hitting_eqp = hitting(series,name)
-    #print hitting_eqp
-    return hitting_eqp
+    return hitting_eqp ##############アクセサリの時はここでreturn！！############
+
+    ##################以下はeqp ff○ eqpnameの場合##############
   else
     series.upcase!
   end
+
   hitting_eqp = hitting(series,name)
   hitting_eqp.each do |link|
 
@@ -90,9 +92,7 @@ def hojikuri_weapon(series,name)
   eqp_info = Nokogiri::HTML(open(link))##
 #############################################
 
-#eqp_info.each do |eqp|
  title = eqp_info.title
-  # result = String.new
 
  imgurl = Nokogiri::HTML(open(link)).xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div/div[1]/div")
  img = imgurl.css('img').each { |image| image.attribute("src").value }
