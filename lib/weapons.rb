@@ -38,7 +38,7 @@ def hitting(series,name)
   docacc.each do |acc|
   #puts "#{weapon}LINE!!!"
    if acc.text.match(/#{name}/)
-  return hitting_eqp << "-------------#{acc.text}\n".gsub(/\n\d\n\n/,"\n")
+   hitting_eqp << "-------------#{acc.text}\n".gsub(/\n\d\n\n/,"\n")
     end
   end
 
