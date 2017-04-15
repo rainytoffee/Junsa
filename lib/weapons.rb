@@ -4,7 +4,8 @@ require 'addressable/uri'
 ##########################################################################
 def generate_docs(series,name)
 
-  if series=="acc"
+  case series
+  when "acc","accy"
      url_acc = Addressable::URI.parse("https://ffrk攻略.gamematome.jp/game/780/wiki/装備品_アクセサリ").normalize
      docacc = Nokogiri::HTML(open(url_acc))
      docacc = docacc.xpath("//table[@id='content_block_2']/tr/td[2 or 3]")
@@ -31,7 +32,8 @@ def hitting(series,name)
   completion = "https://xn--ffrk-8i9hs14f.gamematome.jp"
   hitting_eqp = Array.new
 
-if series=="acc"
+  case series
+  when "acc","accy"
   docacc = generate_docs(series,name)
 
   docacc.each do |acc|
@@ -73,20 +75,24 @@ end
 #########################################################################
 
 def hojikuri_weapon(series,name)
-  result = Array.new
+  result = String.new
+  eqp_info = Array.new
 
-  if series=="acc"
+  case series
+  when "acc","accy"
   else
     series.upcase!
   end
-  hitting_weapons = hitting(series,name)
-  hitting_weapons.each do |link|
+  hitting_eqp = hitting(series,name)
+  hitting_eqp.each do |link|
 
 #############################################
-  weapons_info = Nokogiri::HTML(open(link))##
+  eqp_info = Nokogiri::HTML(open(link))##
 #############################################
 
-   title = weapons_info.title
+#eqp_info.each do |eqp|
+ title = eqp_info.title
+  # result = String.new
 
  imgurl = Nokogiri::HTML(open(link)).xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div/div[1]/div")
  img = imgurl.css('img').each { |image| image.attribute("src").value }
@@ -95,10 +101,11 @@ def hojikuri_weapon(series,name)
   finisher_title = Nokogiri::HTML(open(link)).xpath("//*[@id='content_block_18-body']/a[1]").text
   finisher_info = Nokogiri::HTML(open(link)).xpath("//*[@id='content_block_20']/tr[1]").text
 
-result =["---------",title,img,status,effect,finisher_title,finisher_info]
+ a_result =["---------",title,img,status,effect,finisher_title,finisher_info]
 
-if series=="acc"
-return result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0\n/,"---------").gsub(/\n \n/,"\n")
+ case series
+ when "acc","accy"
+ result << a_result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0\n/,"---------").gsub(/\n \n/,"\n")
 .gsub("ステータス","").gsub("効果","")
 .gsub(/\n\n命中\n\w{2,3}\n\w{2,3}\n\w{2,3}\n\n\n\n\n/,"")
 .gsub(/[\n]{2,}/,"\n")
@@ -116,7 +123,7 @@ return result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速�
 .gsub(/最大値\(超進化後\)/,"超進化:tsuyoi:")
 .gsub(/最大値\n/,"")
 else
-return result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0\n/,"---------").gsub(/\n \n/,"\n")
+result << a_result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速攻略Wiki 0\n/,"---------").gsub(/\n \n/,"\n")
 .gsub("ステータス","").gsub("効果","")
 .gsub(/\n\n命中\n\w{2,3}\n\w{2,3}\n\w{2,3}\n\n\n\n\n/,"")
 .gsub(/[\n]{2,}/,"\n")
@@ -133,8 +140,9 @@ return result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最速�
 .gsub(/最大値\(進化後\)\n/,"進化:tsuyosou: ")
 .gsub(/最大値\(超進化後\)/,"超進化:tsuyoi:")
 .gsub(/最大値\n/,"")
-end
-#.gsub(/回避(\n)\w{1,3}(\n)\w{1,3}(\n)/){|match| match.gsub("#{$1}"," ")}
   end
+  end
+  return result
+#  end
 end
 #hojikuri_weapon("acc","マント")
