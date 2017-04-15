@@ -7,8 +7,7 @@ def generate_docs(series,name)
   case series
   when "acc","accy"
      url_acc = Addressable::URI.parse("https://ffrk攻略.gamematome.jp/game/780/wiki/装備品_アクセサリ").normalize
-     docacc = Nokogiri::HTML(open(url_acc))
-     docacc = docacc.xpath("//table[@id='content_block_2']/tr/td[2 or 3]")
+     docacc = Nokogiri::HTML(open(url_acc)).xpath("//table[@id='content_block_2']/tr")
      return docacc
 
   else
@@ -30,7 +29,7 @@ def hitting(series,name)
 
   #completion = "https://ffrk攻略.gamematome.jp/"
   completion = "https://xn--ffrk-8i9hs14f.gamematome.jp"
-  hitting_eqp = Array.new
+  hitting_eqp = String.new
 
   case series
   when "acc","accy"
@@ -39,9 +38,7 @@ def hitting(series,name)
   docacc.each do |acc|
   #puts "#{weapon}LINE!!!"
    if acc.text.match(/#{name}/)
-     acc.css('a').each do |acclink|
-     hitting_eqp << "#{completion}#{acclink[:href]}"
-      end
+     hitting_eqp << "-------------#{acc.text}\n\n".gsub(/\d/){|rarity| rarity.gsub(rarity,"☆#{rarity}")}
     end
   end
 
@@ -80,6 +77,9 @@ def hojikuri_weapon(series,name)
 
   case series
   when "acc","accy"
+    hitting_eqp = hitting(series,name)
+    #print hitting_eqp
+    return hitting_eqp
   else
     series.upcase!
   end
@@ -142,7 +142,7 @@ result << a_result.join.gsub(/ \| 公式【FFRK】FINAL FANTASY Record Keeper最
 .gsub(/最大値\n/,"")
   end
   end
-  return result
+return result
 #  end
 end
-#hojikuri_weapon("acc","マント")
+hojikuri_weapon("acc","地属性")
