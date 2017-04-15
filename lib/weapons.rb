@@ -38,7 +38,7 @@ def hitting(series,name)
   docacc.each do |acc|
   #puts "#{weapon}LINE!!!"
    if acc.text.match(/#{name}/)
-     hitting_eqp << "-------------#{acc.text}\n\n".gsub(/\d/){|rarity| rarity.gsub(rarity,"☆#{rarity}")}
+     hitting_eqp << "-------------#{acc.text}\n\n".gsub(/\d/,"")
     end
   end
 
