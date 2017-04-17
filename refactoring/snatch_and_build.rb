@@ -1,4 +1,6 @@
-def snatch_and_build(category,item,raw)
+
+class Roughneck
+def self.snatch_and_build(category,item,raw)
   case category
   when :accessory
     accy = Accessory.new
@@ -23,4 +25,5 @@ def snatch_and_build(category,item,raw)
 
    weapon.p_atk             =
  end
+end
 end

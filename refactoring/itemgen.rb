@@ -31,15 +31,15 @@ require './snatch_and_build.rb'
     case category
     when :accessory
         raw.noko_accys.each do |accy|
-          matched_equipments << snatch_and_build(:accessory,accy,raw) if accy.text.match(/#{query}/)
+          matched_equipments << Roughneck::snatch_and_build(:accessory,accy,raw) if accy.text.match(/#{query}/)
           end
     when :weapon
         raw.noko_weapons_rarity5.each do |weapon|
           #print weapon if weapon.text.match(/#{query}/)
-          matched_equipments << snatch_and_build(:weapon,weapon,raw) if weapon.text.match(/#{query}/)
+          matched_equipments << Roughneck::snatch_and_build(:weapon,weapon,raw) if weapon.text.match(/#{query}/)
           end
         raw.noko_weapons_rarity6.each do |weapon|
-          matched_equipments << snatch_and_build(:weapon,weapon,raw) if weapon.text.match(/#{query}/)
+          matched_equipments << Roughneck::snatch_and_build(:weapon,weapon,raw) if weapon.text.match(/#{query}/)
           end
     end
     #p matched_equipments

@@ -1,5 +1,6 @@
 
-def render(matched_items)
+class Renderer
+def self.render(matched_items)
   result = String.new
   matched_items.each do |item|
     result <<
@@ -7,4 +8,5 @@ def render(matched_items)
     .gsub(/\nなし\n/,"耐性/軽減なし")
     end
     return result
+end
 end
