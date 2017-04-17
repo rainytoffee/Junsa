@@ -31,7 +31,7 @@ begin
   case data['text']
 ###########################################################
   when /^help$/
-    client.message channel: data['channel'], text: help
+    client.message channel: data['channel'], text: BotHelpMessage::help
 ###########################################################
 
 ###########################################################
