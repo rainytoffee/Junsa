@@ -26,7 +26,7 @@ class Renderer
           result << "#{i.reinforce}\n:tsuyoi:#{i.finisher}\n"
         end
     end #case
-    print result
+    p result
     return result
   end #def
 end #class

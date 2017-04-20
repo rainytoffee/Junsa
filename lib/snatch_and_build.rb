@@ -32,9 +32,9 @@ def self.snatch_and_build(category,item,raw)
    title_f                    = item.xpath("//*[@id='content_block_18-body']/a[1]/text()").text.uproot_n
    whose_f                    = item.xpath("//*[@id='content_block_18-body']/a[2]/text()").text.uproot_n
    effect_f                   = item.xpath("//*[@id='content_block_20']/tr[1]").text.gsub("効果","").uproot_n
-   burst_abiritie1            = item.xpath("//*[@id='content_block_25']/tr[2]").text.opt_n
-   burst_abiritie2            = item.xpath("//*[@id='content_block_25']/tr[3]").text.opt_n
-   weapon.finisher            = title_f + whose_f + "\n" + effect_f + "\n" + burst_abiritie1 +  burst_abiritie2
+   burst_ability1            = item.xpath("//*[@id='content_block_25']/tr[2]").text.opt_n
+   burst_ability2            = item.xpath("//*[@id='content_block_25']/tr[3]").text.opt_n
+   weapon.finisher            = title_f + "--" +whose_f + "\n" + effect_f + "\n" + burst_ability1 +  burst_ability2
 
 =begin
 #ものによって上昇対象が違うので、何のカテゴリ持ってるかさがします

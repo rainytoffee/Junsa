@@ -61,7 +61,7 @@ begin
 ############################################################
   when /^summary (.*)$/
     client.message channel: data['channel'], text: Summary::summary($1)
-  when /^eqp (.*) (.*)$/
+  when /^eqp\s(.*)\s(.*)$/
     client.message channel: data['channel'], text: Frontman::accept($1,$2)
 ############################################################
   end
