@@ -54,4 +54,4 @@ end
 #########################################
 
 
-#Frontman::accept("ffXIV","王")
+Frontman::accept("ffx","ラズマ")
