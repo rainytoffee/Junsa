@@ -5,8 +5,8 @@ require './similar'
 require './todays_comic'
 require './order_comics'
 require './antidote'
-require './weapons.rb'
 require './help.rb'
+require './itemgen.rb'
 
 #TOKEN読み込み
 TOKEN = ENV["SLACK_API_TOKEN"]
@@ -60,9 +60,9 @@ begin
 
 ############################################################
   when /^summary (.*)$/
-    client.message channel: data['channel'], text: summary($1)
+    client.message channel: data['channel'], text: Summary::summary($1)
   when /^eqp (.*) (.*)$/
-    client.message channel: data['channel'], text: hojikuri_weapon($1,$2)
+    client.message channel: data['channel'], text: Frontman::accept($1,$2)
 ############################################################
   end
 

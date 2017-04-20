@@ -7,25 +7,30 @@ require './snatch_and_build.rb'
 #:noko_accys,  :noko_weapons_rarity5, :noko_weapons_rarity6
 #:domain
 ##########################################
-  def accept(series,query)      #front-end
-    raw = Rawdata.new(series)
+class Frontman
+  ROMAN_NUMERALS = { "I" => 1, "II" => 2, "III" => 3, "IV" => 4, "V" => 5, "VI" => 6, "VII" => 7, "VIII" => 8, "IX" => 9, "X" => 10, "XI" => 11, "XII" => 12, "XIII" => 13, "XIV" => 14, "XV" => 15}
+  def self.accept(series,query)     #front-end
+      series.upcase!
+      ROMAN_NUMERALS.each { |r,n| if series.include?(r); series = "FF#{n}" end}
+      raw = Rawdata.new(series)
 
     case series
-    when "acc"||"accy" #アクセサリ
+    when "ACC"||"ACCY" #アクセサリ
       matched_accessories = inquiry_about(:accessory,query,raw)
-      return "結果大杉内" if matched_accessories.length > 14
-      return render(matched_accessories)
+      return "結果大杉内" if matched_accessories.length > 10
+      #p Renderer::render(matched_accessories)
+      return Renderer::render(matched_accessories,:accessory)
 
     else #ff1..ff15,ffT,零式,外伝,ジョブ,その他
       matched_weapons = inquiry_about(:weapon,query,raw)
-      return render(matched_weapons)
+      return Renderer::render(matched_weapons,:weapon)
 
     end
   end
 ##########################################
 
 ##########################################
-  def inquiry_about(category,query,raw)
+  def self.inquiry_about(category,query,raw)
     matched_equipments = []
 
     case category
@@ -42,10 +47,11 @@ require './snatch_and_build.rb'
           matched_equipments << Roughneck::snatch_and_build(:weapon,weapon,raw) if weapon.text.match(/#{query}/)
           end
     end
-    #p matched_equipments
+  #  p matched_equipments
     return matched_equipments
   end
+end
 #########################################
 
 
-accept("ff8","風切り")
+#Frontman::accept("ffXIV","王")

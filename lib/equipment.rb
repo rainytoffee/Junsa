@@ -1,6 +1,10 @@
 
 
 class Equipment
+  attr_accessor :name, :series, :rarity, :p_atk, :p_atk_limit, :p_def, :p_def_limit,
+                :m_atk, :m_atk_limit, :m_def, :m_def_limit, :mental, :mental_limit,
+                :dodge, :accuracy,:finisher, :reinforce, :img_url
+  attr_reader :numbers_hash
   def initialize
     @name         #お名前
     @series       #作品
@@ -19,10 +23,15 @@ class Equipment
     @accuracy     #命中
     @finisher     #必殺技
     @reinforce    #属性強化
-    @reduct_and_resist #属性軽減/異常耐性
     @img_url      #サムネイルuri
+    @numbers_hash = Hash.new
   end
-  attr_accessor :name, :series, :rarity, :p_atk, :p_atk_limit, :p_def, :p_def_limit, :m_atk, :m_atk_limit, :m_def, :m_def_limit, :mental, :mental_limit, :dodge, :finisher, :reinforce, :reduct_and_resist, :img_url
+
+  def generate_hash
+      @numbers_hash = {"物攻" => @p_atk, "物攻超" => @p_atk_limit, "物防"=>@p_def, "物防超" => @p_def_limit,
+                       "魔力" => @m_atk, "魔力超" => @m_atk_limit, "魔防" => @m_def, "魔防超" => @m_def_limit,
+                       "精神" => @mental, "精神超" => @mental_limit, "回避" => @dodge, "命中" => @accruracy}
+  end
 end
 
 class Weapon < Equipment;end

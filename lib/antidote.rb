@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 
-
+class Summary
 def get_glance(beatit)
 
 #現行通常イベント一覧
@@ -87,6 +87,6 @@ def summary(beatit)
   return "NO INFORMATION. (JIDAI OKURE)" if result.empty?
   return result
 end
-
-#get_glance("めがみ")
+end
+get_glance("めがみ")
 #summary("ヒドゥン")
