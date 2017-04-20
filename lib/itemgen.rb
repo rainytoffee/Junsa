@@ -54,4 +54,4 @@ end
 #########################################
 
 
-Frontman::accept("ffx","ラズマ")
+#Frontman::accept("ffx","ラズマ")
