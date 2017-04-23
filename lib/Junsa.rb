@@ -8,26 +8,21 @@ require './antidote'
 require './help.rb'
 require './itemgen.rb'
 
-#TOKEN読み込み
-TOKEN = ENV["SLACK_API_TOKEN"]
 Slack.configure do |conf|
-  conf.token = TOKEN
+  conf.token = ENV["SLACK_API_TOKEN"]
 end
 client = Slack::RealTime::Client.new
+cmanager = ComicManage.new
 
-# slackに接続できたときの処理
 client.on :hello do
   puts 'CONNECT!'
 end
-
 
 # message eventを受け取った時の処理
 client.on :message do |data|
     you = "<@#{data['user']}>"
 
-cmanager = ComicManage.new
 begin
-
   case data['text']
 ###########################################################
   when /^help$/
