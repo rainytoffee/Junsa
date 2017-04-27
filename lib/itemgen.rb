@@ -17,6 +17,7 @@ class Frontman
       return Renderer::render(matched_accessories,:accessory)
     else #ff1..ff15,ffT,零式,外伝,ジョブ,その他
       matched_weapons = inquiry_about(:weapon,query,raw)
+      return "結果多杉内" if matched_weapons.length > 10
       return Renderer::render(matched_weapons,:weapon)
     end
   end
