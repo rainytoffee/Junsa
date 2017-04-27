@@ -51,14 +51,9 @@ begin
 ############################################################
   when /^summary\s(\w+)$/
     client.message channel: data['channel'], text: Summary::summary($1)
-  when /^eqp\s(.*)\s(.*) $/
-    if data['text'].match(/-/)
-
-    else
+  when /^eqp (.*) (.*)$/
     client.message channel: data['channel'], text: Frontman::accept($1,$2)
 ############################################################
-  else
-    client.message channel: data['channel'], text: "なに？飯が炊けた？"
   end
 
 rescue UncaughtThrowError => e
