@@ -1,7 +1,6 @@
 #Make accessory or weapon instance and set values.
 class Roughneck
-
-  def self.snatch_and_build(category,item,raw)
+  def self.snatch_and_build(category,item)
     case category
     when :accessory
       accy = Accessory.new
@@ -15,7 +14,9 @@ class Roughneck
 
     when :weapon
       weapon = Weapon.new
-      item = Nokogiri::HTML(open("#{raw.domain}#{item.xpath("./a/@href")}"))
+      #puts "itempath!#{item.xpath("./a/@href")}"
+      item = Nokogiri::HTML(open("https://xn--ffrk-8i9hs14f.gamematome.jp#{item.xpath("./a/@href")}"))
+
       ##########文字列scrape#############
       weapon.name                = item.xpath("//*[@class='headline-5']/span").text.gsub(/【.*】/,"")
       weapon.series              = item.xpath("//*[@class='headline-5']/span").text.match(/(【.*】)/)[1]
