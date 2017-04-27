@@ -18,7 +18,7 @@ client.on :hello do
   puts 'CONNECT!'
 end
 
-# message eventを受け取った時の処理
+
 client.on :message do |data|
     you = "<@#{data['user']}>"
 
@@ -27,8 +27,6 @@ begin
 ###########################################################
   when /^help$/
     client.message channel: data['channel'], text: BotHelpMessage::help
-###########################################################
-
 ###########################################################
   when /^cinit$/ #タイトル付で初期化
     client.message channel: data['channel'], text: COrder::cinit(you)
@@ -44,21 +42,23 @@ begin
     client.message channel: data['channel'], text: cmanager.search_today
   when /^titles$/
     client.message channel: data['channel'], text: COrder::title_matcher(you)
-
 ###########################################################
   when /^hi$/
     client.message channel: data['channel'], text: ":jun3::sa3::kiku:"
-
 ############################################################
   when /similar (.*)/
     client.message channel: data['channel'], text: lee($1)
-
 ############################################################
-  when /^summary (.*)$/
+  when /^summary\s(\w+)$/
     client.message channel: data['channel'], text: Summary::summary($1)
-  when /^eqp\s(.*)\s(.*)$/
+  when /^eqp\s(.*)\s(.*) $/
+    if data['text'].match(/-/)
+
+    else
     client.message channel: data['channel'], text: Frontman::accept($1,$2)
 ############################################################
+  else
+    client.message channel: data['channel'], text: "なに？飯が炊けた？"
   end
 
 rescue UncaughtThrowError => e
