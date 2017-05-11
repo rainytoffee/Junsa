@@ -3,29 +3,28 @@ require 'nokogiri'
 require 'addressable/uri'
 require 'dbi'
 require 'sqlite3'
-require './snatch_and_build.rb'
 
 class Rawdata_all
   attr_reader :raw, :dbh
   def initialize
     @dbh = DBI.connect('DBI:SQLite3:ffrk.db')
     #@normalized_domain = "https://xn--ffrk-8i9hs14f.gamematome.jp"
-    #rarity_ary    = ["レア3","レア4","レア5","レア6"]
-    #series_ary    = ["FF1","FF2","FF3","FF4","FF5","FF6","FF7","FF8",
-    #                 "FF9","FF10","FF11","FF12","FF13","FF14","FF15",
-    #                 "零式","外伝","ジョブ","その他"]
+    rarity_ary    = ["レア3","レア4","レア5","レア6"]
+    series_ary    = ["FF1","FF2","FF3","FF4","FF5","FF6","FF7","FF8",
+                     "FF9","FF10","FF11","FF12","FF13","FF14","FF15",
+                     "零式","外伝","ジョブ","その他"]
     @raw = []
-    rarity_ary = ["レア6"]
-    series_ary = ["FF1"]
     rarity_ary.each do |rarity|
       series_ary.each do |series|
         url_eqps = Addressable::URI.parse("https://ffrk攻略.gamematome.jp/game/780/wiki/装備品_#{rarity}_#{series}").normalize
         begin
-             jump_to_individuals = Nokogiri::HTML(open(url_eqps)).xpath("//*[@id='content_block_2']/tr/td[2]")
+             jump_ndividuals = Nokogiri::HTML(open(url_eqps)).xpath("//*[@id='content_block_2']/tr/td[2]")
         rescue;next;end
-              jump_to_individuals.each do |eqp|
+              jump_ndividuals.each do |item|
+                p item
         begin
-              @raw << Roughneck::snatch_and_build(:weapon,eqp)
+               @raw << Roughneck::snatch_and_build(:weapon,item)
+
         rescue;next;end
           end
         end
@@ -35,29 +34,6 @@ class Rawdata_all
     def update_ffrk_db
         rebuild_table
         insert_values
-    end
-
-    def test
-      @dbh.do("insert into ffrk values (
-      'きもちん',
-      '【III】',
-      '5 ',
-      1,
-      2,
-      5,
-      12,
-      15,
-      2,
-      9,
-      111,
-      10,
-      2,
-      1,
-      19,
-      'おもち万',
-      '軽減日',
-      'htttttt:aaaaaa..../'
-      );")
     end
 
     def rebuild_table #新規作成もこれで
@@ -84,27 +60,27 @@ class Rawdata_all
     end
 
     def insert_values
-#db.execute("INSERT INTO t (b, c) VALUES (?, ?)", [42, 666])
       @raw.each do |item|
+        p item
         @dbh.do("insert into ffrk values (
-        #{item.name},
-        #{item.series},
-        #{item.rarity},
-        #{item.p_atk},
-        #{item.p_atk_limit},
-        #{item.p_def},
-        #{item.p_def_limit},
-        #{item.m_atk},
-        #{item.m_atk_limit},
-        #{item.m_def},
-        #{item.m_def_limit},
-        #{item.mental},
-        #{item.mental_limit},
-        #{item.dodge},
-        #{item.accuracy},
-        #{item.finisher},
-        #{item.reinforce},
-        #{item.img_url}
+        '#{item.name}',
+        '#{item.series}',
+        '#{item.rarity}',
+        '#{item.p_atk}',
+        '#{item.p_atk_limit}',
+        '#{item.p_def}',
+        '#{item.p_def_limit}',
+        '#{item.m_atk}',
+        '#{item.m_atk_limit}',
+        '#{item.m_def}',
+        '#{item.m_def_limit}',
+        '#{item.mental}',
+        '#{item.mental_limit}',
+        '#{item.dodge}',
+        '#{item.accuracy}',
+        '#{item.finisher}',
+        '#{item.reinforce}',
+        '#{item.img_url}'
         );")
       end
     end

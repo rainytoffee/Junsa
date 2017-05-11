@@ -1,5 +1,5 @@
 require './raw.rb'
-#require './raw_for_db.rb'
+require './raw_for_db.rb'
 require './equipment.rb'
 require './renderer.rb'
 require './snatch_and_build.rb'
@@ -11,6 +11,7 @@ class Frontman
       series.upcase!
       ROMAN_NUMERALS.each { |r,n| if series.match(/^#{r}$/); series = "FF#{n}" end}
       raw = Rawdata.new(series)
+      rawall = Rawdata_all.new
     case series
     when "ACC","ACCY" #アクセサリ
       matched_accessories = inquiry_about(:accessory,query,raw)
@@ -43,7 +44,8 @@ class Frontman
   end
 end
 
-#########################################
+###########FORTEST##############################
 #Frontman::accept("ffx","ラズマ")
-#fulldata = Rawdata_all.new
-#fulldata.test
+rawall = Rawdata_all.new
+rawall.update_ffrk_db
+#p raw.dbh.execute("select * from ffrk")

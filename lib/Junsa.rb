@@ -1,12 +1,12 @@
-
 require 'slack-ruby-client'
 require 'dbi'
 require './similar'
 require './todays_comic'
 require './order_comics'
 require './antidote'
-require './help.rb'
+require './help'
 require './itemgen.rb'
+require './raw_for_db'
 
 Slack.configure do |conf|
   conf.token = ENV["SLACK_API_TOKEN"]
@@ -53,6 +53,8 @@ begin
     client.message channel: data['channel'], text: Summary::summary($1)
   when /^eqp (.*) (.*)$/
     client.message channel: data['channel'], text: Frontman::accept($1,$2)
+  when /^update_db$/
+    client.message channel: data['channel'], text: "時間かかります。すくなくとも10分くらいは#{Rawdata_all::update_ffrk_db}"
 ############################################################
   end
 
